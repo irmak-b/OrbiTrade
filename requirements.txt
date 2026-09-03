@@ -1,0 +1,31 @@
+# --- Core math & data ---
+numpy>=1.26
+scipy>=1.11
+pandas>=2.1
+
+# --- Testing ---
+pytest>=8.0
+
+# --- Orchestration ---
+langgraph>=0.2
+langchain-openai>=0.2
+langchain-core>=0.3
+pydantic>=2.7
+
+# --- Brokerage & MCP ---
+# alpaca-mcp-server pulls in fastmcp + a compatible `mcp` client SDK
+# transitively; pinning mcp<2 explicitly avoids a known incompatibility
+# between mcp>=2.0 (McpError renamed to MCPError) and fastmcp<3.5.
+alpaca-mcp-server>=2.3.0
+mcp>=1.24,<2
+
+# --- LLM SDKs (for hybrid model usage) ---
+anthropic>=0.40
+openai>=1.50
+
+# --- Dashboard ---
+streamlit>=1.38
+plotly>=5.24
+
+# --- Environment variables ---
+python-dotenv>=1.0
