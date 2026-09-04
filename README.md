@@ -119,9 +119,9 @@ Two independent safety layers have to agree before an order is ever placed: the 
 ---
 
 ## 4. The Four Agents
-
+<p align="center">
 <img width="612" height="582" alt="Agents_schema" src="https://github.com/user-attachments/assets/1974972d-e681-4eef-83fc-71025a3e3472" />
-
+</p>
 
 | Agent | Model (via Featherless) | Responsibility |
 |---|---|---|
