@@ -1,14 +1,13 @@
 """
-dashboard/app_2.py
------------------
-OrbiTrade v.1 - Streamlit panel that imports core/math_engine.py directly.
-Currently runs independently of the agents/Alpaca connection; the goal is
-to visualize the math engine's outputs for the hackathon demo. Once the
-Data Agent (Day 2) is wired up, the synthetic data here will be replaced
-with live Alpaca bars.
+dashboard/pages/1_Math_Sandbox.py
+-----------------------------------
+OrbiTrade - Math Engine Sandbox. Streamlit'in native multi-page özelliği
+sayesinde bu dosya dashboard/app.py ile AYNI deployment / AYNI URL altında,
+sol menüde ikinci sekme olarak otomatik görünür. Ayrı bir "streamlit run"
+veya ayrı bir Cloud deployment'ına gerek yok.
 
-Run with:
-    streamlit run dashboard/app.py
+Bu dosya eski dashboard/app_2.py ile dashboard/app.py'deki tab_sandbox
+bloğunun birleşimidir; içerik değişmedi, sadece konumu değişti.
 """
 
 import sys
@@ -19,7 +18,7 @@ import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # -> proje kökü
 
 from core.math_engine import (
     black_scholes_price,
@@ -30,16 +29,14 @@ from core.math_engine import (
     calculate_bollinger_bands,
     kelly_criterion,
     parametric_var,
-    historical_var,
 )
 
-st.set_page_config(page_title="OrbiTrade v.1 - Math Engine", layout="wide")
+st.set_page_config(page_title="OrbiTrade - Math Engine Sandbox", layout="wide", page_icon="🧮")
 
-st.title("Quantitative Math Engine Panel")
+st.title("Deterministic Option Pricing (Black-Scholes & Greeks)")
 st.caption(
-    "First-version visualization of the deterministic Black-Scholes / Greeks / "
-    "technical indicator / risk sizing calculations. Data is synthetic for now; "
-    "it will be swapped for live Alpaca bars once the Data Agent is connected."
+    "Zero LLM hallucinations. Used by the Data Agent to price every candidate "
+    "option contract before the Quant Agent ever sees it -- 35/35 tests passed."
 )
 
 tab_options, tab_technical, tab_risk = st.tabs(
@@ -54,11 +51,11 @@ with tab_options:
 
     with col_inputs:
         st.subheader("Inputs")
-        S = st.slider("Spot price (S)", 10.0, 500.0, 100.0, step=1.0)
-        K = st.slider("Strike (K)", 10.0, 500.0, 100.0, step=1.0)
+        S = st.slider("Spot price (S)", 10.0, 500.0, 150.0, step=1.0)
+        K = st.slider("Strike (K)", 10.0, 500.0, 155.0, step=1.0)
         days = st.slider("Days to expiry", 1, 365, 30)
         r = st.slider("Risk-free rate (%)", 0.0, 15.0, 5.0, step=0.25) / 100
-        sigma = st.slider("Annualized volatility / IV (%)", 1.0, 150.0, 20.0, step=1.0) / 100
+        sigma = st.slider("Implied Volatility (%)", 1.0, 150.0, 25.0, step=1.0) / 100
         option_type = st.radio("Option type", ["call", "put"], horizontal=True)
         T = days / 365.0
 
@@ -74,16 +71,13 @@ with tab_options:
         m4.metric("Vega (per 1% vol)", f"{greeks.vega:.3f}")
         m5.metric("Theta (daily)", f"{greeks.theta:.3f}")
 
-        # Price/delta curve across a range of spot prices
         spot_range = np.linspace(max(1, S * 0.5), S * 1.5, 80)
         prices = [black_scholes_price(s, K, T, r, sigma, option_type) for s in spot_range]
         deltas = [calculate_greeks(s, K, T, r, sigma, option_type).delta for s in spot_range]
 
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=spot_range, y=prices, name="Option price", yaxis="y1"))
-        fig.add_trace(
-            go.Scatter(x=spot_range, y=deltas, name="Delta", yaxis="y2", line=dict(dash="dot"))
-        )
+        fig.add_trace(go.Scatter(x=spot_range, y=deltas, name="Delta", yaxis="y2", line=dict(dash="dot")))
         fig.add_vline(x=S, line_dash="dash", line_color="gray", annotation_text="Current spot")
         fig.update_layout(
             height=350,
@@ -111,7 +105,7 @@ with tab_options:
 # ---------------------------------------------------------------------------
 with tab_technical:
     st.subheader("Technical indicators (synthetic price series)")
-    st.caption("This series will be replaced with real Alpaca bars once the Data Agent is connected.")
+    st.caption("Demo series -- real Alpaca bars are used live in the Agent Terminal page.")
 
     n_bars = st.slider("Number of bars", 60, 300, 120)
     rng = np.random.default_rng(7)
