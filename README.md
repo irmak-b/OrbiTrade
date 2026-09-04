@@ -3,7 +3,7 @@
 **A math-first, autonomous multi-agent LLM system that trades options on Alpaca, debates its own decisions before every trade, and gets better after every one.**
 
 [🌌 Live Demo (Terminal + Math Sandbox)](https://irmak-b.github.io/OrbiTrade/) · [📂 GitHub Repository](https://github.com/irmak-b/OrbiTrade-Self-Improving-Multi-Agent-Options-Trading-System-) · Built for the [Alpaca AI Trading Agents Hackathon](https://lablab.ai/ai-hackathons/alpaca-ai-trading-agents-hackathon) 
-Promo Video : (https://www.youtube.com/watch?v=89p2qbwqI8Y&t=5s)
+. 📹 Promo Video : (https://www.youtube.com/watch?v=89p2qbwqI8Y&t=5s)
 
 ---
 
