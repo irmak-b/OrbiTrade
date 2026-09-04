@@ -29,3 +29,6 @@ plotly>=5.24
 
 # --- Environment variables ---
 python-dotenv>=1.0
+
+# repair
+json-repair
