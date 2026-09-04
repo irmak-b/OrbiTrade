@@ -120,6 +120,9 @@ Two independent safety layers have to agree before an order is ever placed: the 
 
 ## 4. The Four Agents
 
+<img width="612" height="582" alt="Agents_schema" src="https://github.com/user-attachments/assets/1974972d-e681-4eef-83fc-71025a3e3472" />
+
+
 | Agent | Model (via Featherless) | Responsibility |
 |---|---|---|
 | **Data** | `mistralai/Mistral-7B-Instruct-v0.3` | Ingests live prices, quotes, news, and the option chain via the official `alpaca-mcp-server`; hands off a fully-priced `MarketState` — never raw Alpaca JSON — to every downstream agent. |
